@@ -4,5 +4,20 @@ body {
 
 .full-height {
   height: 100%;
-  margin-bottom: 0;
+}
+
+@media screen and (min-width: 992px) {
+  .full-height {
+    margin-bottom: 0 !important;
+  }
+  .lmargin-bottom {
+    margin-bottom: 20px
+  }
+}
+
+.fade-white {
+  background: -webkit-linear-gradient(#1E88E5, #FFF); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(#1E88E5, #FFF); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(#1E88E5, #FFF); /* For Firefox 3.6 to 15 */
+  background: linear-gradient(#1E88E5, #FFF); /* Standard syntax */
 }

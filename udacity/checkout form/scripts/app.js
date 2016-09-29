@@ -2,7 +2,7 @@ var CreditCardForm = React.createClass({
     render: function() {
         return (
             <div className="row">
-                <div className="col s12 m6">
+                <div className="col s12 m12 l6">
                     <div className="card">
                         <div className="card-content">
                             <span className="card-title">Please enter your Credit Card information.</span>
@@ -61,7 +61,7 @@ var AddressForm = React.createClass({
     render: function() {
         return (
             <div className="row">
-                <div className="col s12 m6">
+                <div className="col s12 m12 l6">
                     <div className="card">
                         <div className="card-content">
                             <span className="card-title">What is your shipping address?</span>
@@ -131,7 +131,7 @@ var Cart = React.createClass({
     render: function() {        
         var items = this.props.data.map(function(item) {
             return (
-                <div className="card horizontal valign-wrapper">
+                <div className="card horizontal valign-wrapper black-text">
                     <div className="card-image">
                         <img src={item.img} />
                     </div>
@@ -156,14 +156,17 @@ var Cart = React.createClass({
 var Checkout = React.createClass({
     render: function() {
         return (
-            <div className="row grey lighten-1 full-height">
-                <div className="col s12 m3">
-                    <h2 className="center">Your Cart</h2>
-                    <Cart data={this.props.data} />
+            <div className="row blue lighten-2 full-height">
+                <div className="col s12 m12 l3 white-text">
+                    <h3 className="center">Your Cart</h3>
+                    <Cart data={this.props.data}/>
                 </div>
-                <div className="col s12 m9 white">
+                <div className="col s12 m12 l9 white">
                     <AddressForm />
                     <CreditCardForm />
+                    <div className="col s12 m12 l6 lmargin-bottom">
+                        <a className="waves-effect waves-light btn blue lighten-2 right">Purchase</a>
+                    </div>
                 </div>
             </div>
         )
