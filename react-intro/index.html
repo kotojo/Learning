@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head lang="en">
+    <meta charset="UTF-8">
+    <title>Vidflix</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script src="node_modules/react/dist/react.js"></script>
+    <script src="node_modules/react-dom/dist/react-dom.js"></script>
+    <script>
+      var div = React.DOM.div;
+      var h1 = React.DOM.h1;
+
+      var myFirstComponent = (
+        div(null, 
+          h1(null, 'This is my first component!')
+        )
+      );
+
+      ReactDOM.render(myFirstComponent, document.getElementById('app'));
+    </script>
+  </body>
+</html>
