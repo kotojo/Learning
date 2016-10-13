@@ -2,7 +2,7 @@ const path = require('path')
 
 module.exports = {
   content: __dirname,
-  entry: './js/ClientName.jsx',
+  entry: './js/ClientApp.jsx',
   output: {
     path: path.join(__dirname, '/public'),
     filename: 'bundle.js'
@@ -16,10 +16,21 @@ module.exports = {
     chunks: false
   },
   module: {
+    preloaders: [
+      {
+        test: /\.jsx?$/,
+        loader: 'eslint-loader',
+        exclude: /node_modules/
+      }
+    ],
     loaders: [
       {
         test: /\.jsx?$/,
         loader: 'babel-loader'
+      },
+      {
+        test: /\.json$/,
+        loader: 'json-loader'
       }
     ]
   }
