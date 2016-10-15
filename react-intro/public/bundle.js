@@ -195,6 +195,8 @@
 /* 3 */
 /***/ function(module, exports) {
 
+	'use strict';
+
 	// shim for using process in browser
 	var process = module.exports = {};
 
@@ -27430,14 +27432,23 @@
 
 	'use strict';
 
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 	var React = __webpack_require__(166);
-	var shows = __webpack_require__(237);
+	var data = __webpack_require__(237);
+	var ShowCard = __webpack_require__(238);
 
 	var Search = function Search() {
 	  return React.createElement(
-	    'h1',
-	    null,
-	    'Search!!'
+	    'div',
+	    { className: 'container' },
+	    React.createElement(
+	      'div',
+	      { className: 'shows' },
+	      data.shows.map(function (show, index) {
+	        return React.createElement(ShowCard, _extends({}, show, { key: index, id: index }));
+	      })
+	    )
 	  );
 	};
 
@@ -27619,6 +27630,53 @@
 			}
 		]
 	};
+
+/***/ },
+/* 238 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var React = __webpack_require__(166);
+
+	var ShowCard = function ShowCard(props) {
+	  return React.createElement(
+	    'div',
+	    { className: 'show-card' },
+	    React.createElement('img', { src: './public/img/posters/' + props.poster, className: 'show-card-img' }),
+	    React.createElement(
+	      'div',
+	      { className: 'show-card-text' },
+	      React.createElement(
+	        'h3',
+	        { className: 'show-card-title' },
+	        props.title
+	      ),
+	      React.createElement(
+	        'h4',
+	        { className: 'show-card-year' },
+	        '(',
+	        props.year,
+	        ')'
+	      ),
+	      React.createElement(
+	        'p',
+	        { className: 'show-card-description' },
+	        props.description
+	      )
+	    )
+	  );
+	};
+
+	ShowCard.propTypes = {
+	  year: React.PropTypes.string.isRequired,
+	  poster: React.PropTypes.string.isRequired,
+	  description: React.PropTypes.string.isRequired,
+	  title: React.PropTypes.string.isRequired,
+	  id: React.PropTypes.number.isRequired
+	};
+
+	module.exports = ShowCard;
 
 /***/ }
 /******/ ]);
