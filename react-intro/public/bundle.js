@@ -46,30 +46,68 @@
 
 	'use strict';
 
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 	var ReactDOM = __webpack_require__(1);
 	var React = __webpack_require__(166);
 	var Landing = __webpack_require__(172);
 	var Layout = __webpack_require__(236);
 	var Search = __webpack_require__(237);
+	var Details = __webpack_require__(240);
+	var data = __webpack_require__(238);
 	var ReactRouter = __webpack_require__(173);
 	var Router = ReactRouter.Router;
 	var Route = ReactRouter.Route;
 	var hashHistory = ReactRouter.hashHistory;
 	var IndexRoute = ReactRouter.IndexRoute;
 
+	var App = function (_React$Component) {
+	  _inherits(App, _React$Component);
 
-	var App = function App() {
-	  return React.createElement(
-	    Router,
-	    { history: hashHistory },
-	    React.createElement(
-	      Route,
-	      { path: '/', component: Layout },
-	      React.createElement(IndexRoute, { component: Landing }),
-	      React.createElement(Route, { path: '/search', component: Search })
-	    )
-	  );
-	};
+	  function App(props) {
+	    _classCallCheck(this, App);
+
+	    var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
+
+	    _this.assignShow = _this.assignShow.bind(_this);
+	    return _this;
+	  }
+
+	  _createClass(App, [{
+	    key: 'assignShow',
+	    value: function assignShow(nextState, replace) {
+	      var show = data.shows[nextState.params.id];
+	      if (!show) {
+	        return replace('/');
+	      }
+	      Object.assign(nextState.params, show);
+	      return nextState;
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return React.createElement(
+	        Router,
+	        { history: hashHistory },
+	        React.createElement(
+	          Route,
+	          { path: '/', component: Layout },
+	          React.createElement(IndexRoute, { component: Landing }),
+	          React.createElement(Route, { path: '/search', component: Search, shows: data.shows }),
+	          React.createElement(Route, { path: '/details/:id', component: Details, onEnter: this.assignShow })
+	        )
+	      );
+	    }
+	  }]);
+
+	  return App;
+	}(React.Component);
 
 	ReactDOM.render(React.createElement(App, null), document.getElementById('app'));
 
@@ -27467,8 +27505,8 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 	var React = __webpack_require__(166);
-	var data = __webpack_require__(238);
 	var ShowCard = __webpack_require__(239);
+	var Header = __webpack_require__(241);
 
 	var Search = function (_React$Component) {
 	  _inherits(Search, _React$Component);
@@ -27499,20 +27537,11 @@
 	      return React.createElement(
 	        'div',
 	        { className: 'container' },
-	        React.createElement(
-	          'header',
-	          { className: 'header' },
-	          React.createElement(
-	            'h1',
-	            { className: 'brand' },
-	            'kvids'
-	          ),
-	          React.createElement('input', { type: 'text', className: 'search-input', placeholder: 'Search', value: this.state.searchTerm, onChange: this.handleSearchTermChange })
-	        ),
+	        React.createElement(Header, { handleSearchTermChange: this.handleSearchTermChange, showSearch: true, searchTerm: this.state.searchTerm }),
 	        React.createElement(
 	          'div',
 	          { className: 'shows' },
-	          data.shows.filter(function (show) {
+	          this.props.route.shows.filter(function (show) {
 	            return (show.title + ' ' + show.description).toUpperCase().indexOf(_this2.state.searchTerm.toUpperCase()) >= 0;
 	          }).map(function (show, index) {
 	            return React.createElement(ShowCard, _extends({}, show, { key: index, id: index }));
@@ -27524,6 +27553,12 @@
 
 	  return Search;
 	}(React.Component);
+
+	Search.propTypes = {
+	  route: React.PropTypes.shape({
+	    shows: React.PropTypes.arrayOf(React.PropTypes.object)
+	  })
+	};
 
 	module.exports = Search;
 
@@ -27711,31 +27746,38 @@
 	'use strict';
 
 	var React = __webpack_require__(166);
+	var ReactRouter = __webpack_require__(173);
+	var Link = ReactRouter.Link;
+
 
 	var ShowCard = function ShowCard(props) {
 	  return React.createElement(
-	    'div',
-	    { className: 'show-card' },
-	    React.createElement('img', { src: './public/img/posters/' + props.poster, className: 'show-card-img' }),
+	    Link,
+	    { to: '/details/' + props.id },
 	    React.createElement(
 	      'div',
-	      { className: 'show-card-text' },
+	      { className: 'show-card' },
+	      React.createElement('img', { src: './public/img/posters/' + props.poster, className: 'show-card-img' }),
 	      React.createElement(
-	        'h3',
-	        { className: 'show-card-title' },
-	        props.title
-	      ),
-	      React.createElement(
-	        'h4',
-	        { className: 'show-card-year' },
-	        '(',
-	        props.year,
-	        ')'
-	      ),
-	      React.createElement(
-	        'p',
-	        { className: 'show-card-description' },
-	        props.description
+	        'div',
+	        { className: 'show-card-text' },
+	        React.createElement(
+	          'h3',
+	          { className: 'show-card-title' },
+	          props.title
+	        ),
+	        React.createElement(
+	          'h4',
+	          { className: 'show-card-year' },
+	          '(',
+	          props.year,
+	          ')'
+	        ),
+	        React.createElement(
+	          'p',
+	          { className: 'show-card-description' },
+	          props.description
+	        )
 	      )
 	    )
 	  );
@@ -27750,6 +27792,158 @@
 	};
 
 	module.exports = ShowCard;
+
+/***/ },
+/* 240 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var React = __webpack_require__(166);
+	var Header = __webpack_require__(241);
+
+	var Details = function (_React$Component) {
+	  _inherits(Details, _React$Component);
+
+	  function Details() {
+	    _classCallCheck(this, Details);
+
+	    return _possibleConstructorReturn(this, (Details.__proto__ || Object.getPrototypeOf(Details)).apply(this, arguments));
+	  }
+
+	  _createClass(Details, [{
+	    key: 'render',
+	    value: function render() {
+	      var params = this.props.params || {};
+	      var title = params.title;
+	      var description = params.description;
+	      var year = params.year;
+	      var poster = params.poster;
+	      var trailer = params.trailer;
+
+	      return React.createElement(
+	        'div',
+	        { className: 'container' },
+	        React.createElement(Header, null),
+	        React.createElement(
+	          'div',
+	          { className: 'video-info' },
+	          React.createElement(
+	            'h1',
+	            { className: 'video-title' },
+	            title
+	          ),
+	          React.createElement(
+	            'h2',
+	            { className: 'video-year' },
+	            '(',
+	            year,
+	            ')'
+	          ),
+	          React.createElement('img', { className: 'video-poster', src: './public/img/posters/' + poster }),
+	          React.createElement(
+	            'p',
+	            { className: 'video-description' },
+	            description
+	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'video-container' },
+	          React.createElement('iframe', { src: 'https://www.youtube-nocookie.com/embed/' + trailer + '?rel=0&amp;controls=0&amp;showinfo=0', frameBorder: '0', allowFullScreen: true })
+	        )
+	      );
+	    }
+	  }]);
+
+	  return Details;
+	}(React.Component);
+
+	Details.propTypes = {
+	  params: React.PropTypes.object
+	};
+
+	module.exports = Details;
+
+/***/ },
+/* 241 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var React = __webpack_require__(166);
+	var ReactRouter = __webpack_require__(173);
+	var Link = ReactRouter.Link;
+
+	var Header = function (_React$Component) {
+	  _inherits(Header, _React$Component);
+
+	  function Header() {
+	    _classCallCheck(this, Header);
+
+	    return _possibleConstructorReturn(this, (Header.__proto__ || Object.getPrototypeOf(Header)).apply(this, arguments));
+	  }
+
+	  _createClass(Header, [{
+	    key: 'render',
+	    value: function render() {
+	      var utilSpace = void 0;
+	      if (this.props.showSearch) {
+	        utilSpace = React.createElement('inptu', { type: 'text', className: 'search-input', placeholder: 'Search', value: this.props.searchTerm, onChange: this.props.handleSearchTermChange });
+	      } else {
+	        utilSpace = React.createElement(
+	          'h2',
+	          { className: 'header-back' },
+	          React.createElement(
+	            Link,
+	            { to: '/search' },
+	            'Back'
+	          )
+	        );
+	      }
+	      return React.createElement(
+	        'header',
+	        { className: 'header' },
+	        React.createElement(
+	          'h1',
+	          { className: 'brand' },
+	          React.createElement(
+	            Link,
+	            { to: '/', className: 'brand-link' },
+	            'kvids'
+	          )
+	        ),
+	        utilSpace
+	      );
+	    }
+	  }]);
+
+	  return Header;
+	}(React.Component);
+
+	Header.propTypes = {
+	  handleSearchTermChange: React.PropTypes.func,
+	  showSearch: React.PropTypes.bool,
+	  searchTerm: React.PropTypes.string
+	};
+
+	module.exports = Header;
 
 /***/ }
 /******/ ]);
