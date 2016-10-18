@@ -49,8 +49,8 @@
 	var ReactDOM = __webpack_require__(1);
 	var React = __webpack_require__(166);
 	var Landing = __webpack_require__(172);
-	var Layout = __webpack_require__(239);
-	var Search = __webpack_require__(236);
+	var Layout = __webpack_require__(236);
+	var Search = __webpack_require__(237);
 	var ReactRouter = __webpack_require__(173);
 	var Router = ReactRouter.Router;
 	var Route = ReactRouter.Route;
@@ -27438,6 +27438,24 @@
 
 	'use strict';
 
+	var React = __webpack_require__(166);
+
+	var Layout = function Layout(props) {
+	  return React.createElement(
+	    'div',
+	    { className: 'app-container' },
+	    props.children
+	  );
+	};
+
+	module.exports = Layout;
+
+/***/ },
+/* 237 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -27449,8 +27467,8 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 	var React = __webpack_require__(166);
-	var data = __webpack_require__(237);
-	var ShowCard = __webpack_require__(238);
+	var data = __webpack_require__(238);
+	var ShowCard = __webpack_require__(239);
 
 	var Search = function (_React$Component) {
 	  _inherits(Search, _React$Component);
@@ -27510,7 +27528,7 @@
 	module.exports = Search;
 
 /***/ },
-/* 237 */
+/* 238 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -27687,7 +27705,7 @@
 	};
 
 /***/ },
-/* 238 */
+/* 239 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27732,24 +27750,6 @@
 	};
 
 	module.exports = ShowCard;
-
-/***/ },
-/* 239 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var React = __webpack_require__(166);
-
-	var Layout = function Layout(props) {
-	  return React.createElement(
-	    'div',
-	    { className: 'app-container' },
-	    props.children
-	  );
-	};
-
-	module.exports = Layout;
 
 /***/ }
 /******/ ]);
