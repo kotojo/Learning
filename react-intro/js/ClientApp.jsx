@@ -5,6 +5,10 @@ const Layout = require('./Layout')
 const Search = require('./Search')
 const Details = require('./Details')
 const data = require('../public/data')
+const Store = require('./Store')
+const { store } = Store
+const reactRedux = require('react-redux')
+const { Provider } = reactRedux
 const ReactRouter = require('react-router')
 const { Router, Route, hashHistory, IndexRoute } = ReactRouter
 
@@ -38,4 +42,10 @@ class App extends React.Component {
   }
 }
 
-ReactDOM.render(<App />, document.getElementById('app'))
+ReactDOM.render(
+  (
+    <Provider store={store}>
+      <App />
+    </Provider>
+  ),
+  document.getElementById('app'))

@@ -1,12 +1,22 @@
 const React = require('react')
 const ReactRouter = require('react-router')
+const Store = require('./Store')
+const { connector } = Store
 const { Link } = ReactRouter
 
 class Header extends React.Component {
+  constructor (props) {
+    super(props)
+
+    this.handleSearchTermChange = this.handleSearchTermChange.bind(this)
+  }
+  handleSearchTermChange (e) {
+    this.props.setSearchTerm(e.target.value)
+  }
   render () {
     let utilSpace
     if (this.props.showSearch) {
-      utilSpace = <inptu type='text' className='search-input' placeholder='Search' value={this.props.searchTerm} onChange={this.props.handleSearchTermChange} />
+      utilSpace = <input type='text' className='search-input' placeholder='Search' value={this.props.searchTerm} onChange={this.handleSearchTermChange} />
     } else {
       utilSpace = (
         <h2 className='header-back'>
@@ -30,9 +40,9 @@ class Header extends React.Component {
 }
 
 Header.propTypes = {
-  handleSearchTermChange: React.PropTypes.func,
+  setSearchTerm: React.PropTypes.func,
   showSearch: React.PropTypes.bool,
   searchTerm: React.PropTypes.string
 }
 
-module.exports = Header
+module.exports = connector(Header)
