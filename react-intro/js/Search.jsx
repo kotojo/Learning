@@ -10,7 +10,7 @@ class Search extends React.Component {
       <div className='container'>
         <Header showSearch />
         <div className='shows'>
-          {this.props.route.shows
+          {this.props.shows
             .filter((show) => `${show.title} ${show.description}`.toUpperCase().indexOf(this.props.searchTerm.toUpperCase()) >= 0)
             .map((show, index) => (
               <ShowCard {...show} key={index} id={index} />
@@ -21,11 +21,9 @@ class Search extends React.Component {
   }
 }
 
-Search.PropTypes = {
+Search.propTypes = {
   searchTerm: React.PropTypes.string,
-  route: React.PropTypes.shape({
-    shows: React.PropTypes.arrayOf(React.PropTypes.object)
-  })
+  shows: React.PropTypes.arrayOf(React.PropTypes.object)
 }
 
 module.exports = connector(Search)
