@@ -5,6 +5,7 @@ module.exports = {
   entry: './js/BrowserEntry.jsx',
   output: {
     path: path.join(__dirname, '/public'),
+    publicPath: '/public/',
     filename: 'bundle.js'
   },
   resolve: {
@@ -13,7 +14,7 @@ module.exports = {
   stats: {
     colors: true,
     reasons: true,
-    chunks: false
+    chunks: true
   },
   module: {
     preloaders: [
