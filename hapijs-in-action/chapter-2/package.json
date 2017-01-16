@@ -1,0 +1,14 @@
+{
+  "name": "dindin",
+  "version": "1.0.0",
+  "description": "A social network for food",
+  "main": "index.js",
+  "author": "Bruce Kellerman",
+  "private": true,
+  "license": "ISC",
+  "dependencies": {
+    "hapi": "^13.5.3",
+    "hapi-auth-bearer-token": "^4.3.1",
+    "sqlite3": "^3.1.8"
+  }
+}
