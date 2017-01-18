@@ -12,7 +12,8 @@ server.bind({
 server.register([
   require('dindin-api'),
   require('inert'),
-  require('vision')
+  require('vision'),
+  require('hapi-auth-cookie')
 ], (err) => {
   if (err) {
     throw err
@@ -27,7 +28,13 @@ server.register([
     layoutPath: './views/layout',
     layout: true,
     isCached: false,
+    helpersPath: './views/helpers',
     partialsPath: './views/partials'
+  })
+
+  server.auth.strategy('session', 'cookie', 'try', {
+    password: 'really-long-password-thing-that-we-use',
+    isSecure: false
   })
 
   server.route(require('./routes'))
